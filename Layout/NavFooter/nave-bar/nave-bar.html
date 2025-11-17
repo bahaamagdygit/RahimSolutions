@@ -1,0 +1,122 @@
+<nav class="navbar">
+  <!-- Top Section -->
+  <div class="navbar-top">
+    <div class="navbar-container">
+      <!-- Logo -->
+      <div class="navbar-logo">
+        <img src="/assts/imge/MainLogo.png" alt="Rahim Solutions" class="logo-img">
+       
+      </div>
+
+      <!-- Search Bar -->
+      <div class="navbar-search">
+        <!-- All Categories Dropdown -->
+        <button class="categories-btn" (click)="toggleCategories()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          All Categories
+        </button>
+
+        <!-- Search Input -->
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search Ads"
+          [(ngModel)]="searchQuery">
+
+        <!-- Search Button -->
+        <button class="search-btn" (click)="onSearch()">
+          Find
+        </button>
+      </div>
+
+      <!-- Right Side Actions -->
+      <div class="navbar-actions">
+        <!-- Signup -->
+        <button class="action-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Signup
+        </button>
+
+        <!-- Login -->
+        <button class="action-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          Login
+        </button>
+
+        <!-- Language Selector with Dropdown -->
+        <div class="language-dropdown">
+          <button class="language-btn" (click)="toggleLanguageDropdown()">
+            <img [src]="selectedLanguage().flag" [alt]="selectedLanguage().name" class="flag-icon">
+            <span class="lang-text">{{ selectedLanguage().name }}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          @if (showLanguageDropdown()) {
+            <div class="language-menu">
+              @for (lang of languages; track lang.code) {
+                <button
+                  class="language-item"
+                  [class.active]="selectedLanguage().code === lang.code"
+                  (click)="selectLanguage(lang)">
+                  <img [src]="lang.flag" [alt]="lang.name" class="flag-icon">
+                  <span>{{ lang.name }}</span>
+                  @if (selectedLanguage().code === lang.code) {
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="check-icon">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  }
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Categories Section -->
+  <div class="navbar-bottom">
+    <div class="navbar-container">
+      <div class="categories-list">
+        @for (category of mainCategories; track category.name) {
+          <a [href]="category.link" class="category-link">
+            {{ category.name }}
+          </a>
+        }
+
+        <!-- More Categories -->
+        <button class="more-categories-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="12" cy="5" r="1"></circle>
+            <circle cx="12" cy="19" r="1"></circle>
+          </svg>
+          More Categories
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
