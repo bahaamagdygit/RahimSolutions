@@ -1,0 +1,64 @@
+<div class="recommended-section">
+  <!-- Section Header -->
+  <div class="section-header">
+    <h2 class="section-title">Recommended for you</h2>
+    <a href="#" class="view-more">View More</a>
+  </div>
+
+  <!-- Cards Container -->
+  <div class="cards-container">
+    @for (product of getCurrentPageProducts(); track product.productTitle) {
+      <app-min-genaric-card
+        [badgeText]="product.badgeText"
+        [badgeGradient]="product.badgeGradient"
+        [discountPercent]="product.discountPercent"
+        [discountGradient]="product.discountGradient"
+        [categoryText]="product.categoryText"
+        [categoryBgColor]="product.categoryBgColor"
+        [statsColor]="product.statsColor"
+        [currentPriceColor]="product.currentPriceColor"
+        [productTitle]="product.productTitle"
+        [currentPrice]="product.currentPrice"
+        [originalPrice]="product.originalPrice"
+        [productImage]="product.productImage">
+      </app-min-genaric-card>
+    }
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <!-- Previous Arrow -->
+    <button
+      class="prev-arrow"
+      (click)="previousPage()"
+      [disabled]="currentPage() === 0"
+      aria-label="Previous page">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+
+    <!-- Pagination Dots -->
+    <div class="pagination-dots">
+      @for (pageNum of getPageNumbers(); track pageNum) {
+        <button
+          class="dot"
+          [class.active]="currentPage() === pageNum"
+          (click)="goToPage(pageNum)"
+          [attr.aria-label]="'Go to page ' + (pageNum + 1)">
+        </button>
+      }
+    </div>
+
+    <!-- Next Arrow -->
+    <button
+      class="next-arrow"
+      (click)="nextPage()"
+      [disabled]="currentPage() === getTotalPages() - 1"
+      aria-label="Next page">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </button>
+  </div>
+</div>
