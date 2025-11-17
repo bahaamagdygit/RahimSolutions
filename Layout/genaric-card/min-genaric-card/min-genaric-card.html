@@ -1,0 +1,82 @@
+<div class="product-card" [style.background]="cardBgColor()">
+  <!-- Card Header with Badge and Action Buttons -->
+  <div class="card-image-container">
+    <img [src]="productImage()" alt="Product Image" class="product-image">
+
+    <!-- Top Badge -->
+    <div class="badge" [style.background]="badgeGradient()">{{ badgeText() }}</div>
+
+    <!-- Right Side Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn" aria-label="Add to wishlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+      </button>
+      <button class="action-btn" aria-label="Comment">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </button>
+      <button class="action-btn" aria-label="Share">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+          <polyline points="16 6 12 2 8 6"></polyline>
+          <line x1="12" y1="2" x2="12" y2="15"></line>
+        </svg>
+      </button>
+      <button class="action-btn" aria-label="Like">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+        </svg>
+      </button>
+      <button class="action-btn discount-btn" aria-label="Discount" [style.background]="discountGradient()">
+        <span class="discount-text">{{ discountPercent() }}</span>
+        <span class="discount-label">OFF</span>
+      </button>
+    </div>
+
+    <!-- Category Chip at Bottom -->
+    <div class="category-chip" [style.background]="categoryBgColor()">
+      <div class="category-icon" [style.background]="categoryIconBg()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </div>
+      <span class="category-text">{{ categoryText() }}</span>
+    </div>
+  </div>
+
+  <!-- Card Footer with Engagement Stats -->
+  <div class="card-stats">
+    <button class="stat-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+      </svg>
+      <span>32</span>
+    </button>
+    <button class="stat-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+        <polyline points="16 6 12 2 8 6"></polyline>
+        <line x1="12" y1="2" x2="12" y2="15"></line>
+      </svg>
+      <span>12</span>
+    </button>
+    <button class="stat-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+      </svg>
+      <span>32</span>
+    </button>
+  </div>
+
+  <!-- Product Details -->
+  <div class="card-content">
+    <h3 class="product-title">{{ productTitle() }}</h3>
+    <div class="price-container">
+      <span class="current-price" [style.color]="currentPriceColor()">{{ currentPrice() }}</span>
+      <span class="original-price" [style.color]="originalPriceColor()">{{ originalPrice() }}</span>
+    </div>
+  </div>
+</div>
