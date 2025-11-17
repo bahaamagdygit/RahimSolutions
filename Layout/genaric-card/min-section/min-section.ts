@@ -83,7 +83,7 @@ export class MinSection {
       productTitle: 'Casual Cloths Blazers Bold',
       currentPrice: '$160.00',
       originalPrice: '$200.00',
-      productImage: '/assts/imge/icon-17-pro.jpg'
+      productImage: '/assts/imge/1.jpg'
     },
     {
       badgeText: 'New',
