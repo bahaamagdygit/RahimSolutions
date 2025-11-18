@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NaveBar } from '../../Layout/NavFooter/nave-bar/nave-bar';
+import { GenaricSlider } from '../../Layout/slider/genaric-slider/genaric-slider';
+import { TestimonialSlider } from '../../Layout/slider/testimonial-slider/testimonial-slider';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NaveBar],
+  imports: [RouterOutlet, NaveBar, GenaricSlider, TestimonialSlider],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
