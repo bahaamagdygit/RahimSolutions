@@ -1,0 +1,37 @@
+<div class="testimonial-container">
+  <div class="testimonial-header">
+    <h2 class="testimonial-title">What Our Clients Say</h2>
+    <p class="testimonial-subtitle">Don't just take our word for it - hear from our satisfied customers</p>
+  </div>
+
+  <div class="slider">
+    <!-- Radio Inputs for Pure CSS Control -->
+    @for (testimonial of testimonials(); track $index) {
+      <input type="radio" name="testimonial" [id]="'t-' + ($index + 1)"
+             [checked]="currentSlide() === $index"
+             (change)="goToSlide($index)" />
+    }
+
+    <!-- Testimonials with 3D Stacking Effect -->
+    <div class="testimonials">
+      @for (testimonial of testimonials(); track $index) {
+        <label class="item" [attr.for]="'t-' + ($index + 1)"
+               [style.transform]="getSlideTransform($index)"
+               [style.opacity]="getSlideOpacity($index)"
+               [style.z-index]="getSlideZIndex($index)">
+          <div class="testimonial-card">
+            <!-- Only Image -->
+            <img [src]="testimonial.image" [alt]="testimonial.name" class="card-img" />
+          </div>
+        </label>
+      }
+    </div>
+
+    <!-- Pagination Dots -->
+    <div class="dots">
+      @for (testimonial of testimonials(); track $index) {
+        <label [attr.for]="'t-' + ($index + 1)"></label>
+      }
+    </div>
+  </div>
+</div>
