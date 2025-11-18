@@ -1,0 +1,68 @@
+<div class="slider-container">
+  <!-- Previous Arrow -->
+  <button class="slider-arrow prev-arrow" (click)="previousSlide()" aria-label="Previous Slide">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
+
+  <!-- Slides Wrapper -->
+  <div class="slider-wrapper">
+    <div class="slider-track" [style.transform]="getTransformStyle()">
+      @for (slide of slides(); track $index) {
+        <div class="slide" [style.flex]="'0 0 ' + (100 / slidesToShow()) + '%'">
+          <div class="slide-card" [style.background]="slide.backgroundGradient">
+            <!-- Card Content -->
+            <div class="slide-content">
+              @if (slide.image) {
+                <div class="slide-image">
+                  <img [src]="slide.image" [alt]="slide.title">
+                </div>
+              }
+
+              <div class="slide-text">
+                <h2 class="slide-title">{{ slide.title }}</h2>
+                @if (slide.subtitle) {
+                  <h3 class="slide-subtitle">{{ slide.subtitle }}</h3>
+                }
+                @if (slide.description) {
+                  <p class="slide-description">{{ slide.description }}</p>
+                }
+                @if (slide.buttonText) {
+                  <a [href]="slide.buttonLink" class="slide-button">
+                    {{ slide.buttonText }}
+                  </a>
+                }
+              </div>
+            </div>
+
+            <!-- Decorative Elements -->
+            <div class="slide-decoration">
+              <div class="decoration-circle"></div>
+              <div class="decoration-circle"></div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Next Arrow -->
+  <button class="slider-arrow next-arrow" (click)="nextSlide()" aria-label="Next Slide">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </button>
+
+  <!-- Pagination Dots -->
+  <div class="slider-pagination">
+    @for (slideNumber of getSlideNumbers(); track slideNumber) {
+      <button
+        class="pagination-dot"
+        [class.active]="currentSlide() === slideNumber"
+        (click)="goToSlide(slideNumber)"
+        [attr.aria-label]="'Go to slide ' + (slideNumber + 1)">
+      </button>
+    }
+  </div>
+</div>
