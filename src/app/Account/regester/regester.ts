@@ -1,10 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { SideImge } from '../side-imge/side-imge';
 
 @Component({
   selector: 'app-regester',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule,SideImge],
   templateUrl: './regester.html',
   styleUrl: './regester.css',
 })
