@@ -1,8 +1,8 @@
 .testimonial-container {
   width: 100%;
-  max-width: 1400px;
+  /* max-width: 1400px; */
   margin: 0 auto;
-  padding: 4rem 2rem;
+  /* padding: 4rem 2rem; */
   background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
 }
 

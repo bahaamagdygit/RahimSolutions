@@ -1,0 +1,14 @@
+<section class="categories-section">
+  <div class="categories-container">
+    <div class="categories-grid">
+      @for (category of categories(); track category.id) {
+        <div class="category-card" (click)="onCategoryClick(category)">
+          <h3 class="category-title">{{ category.title }}</h3>
+          <div class="category-image-wrapper">
+            <img [src]="category.image" [alt]="category.title" class="category-image" />
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
