@@ -2,6 +2,10 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     {
+        path: 'home',
+        loadComponent: () => import('../app/pages/home-page/home-page').then(m => m.HomePage)
+    },
+     {
         path: 'section',
         loadComponent: () => import('../../Layout/genaric-card/min-section/min-section').then(m => m.MinSection)
     },

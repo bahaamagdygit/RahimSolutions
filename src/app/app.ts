@@ -5,10 +5,11 @@ import { Footer } from '../../Layout/NavFooter/footer/footer';
 import { GenaricSlider } from '../../Layout/slider/genaric-slider/genaric-slider';
 import { TestimonialSlider } from '../../Layout/slider/testimonial-slider/testimonial-slider';
 import { CardsListSection } from './cards/cards-list-section/cards-list-section';
+import { ImgDetails } from "./Profile/img-details/img-details";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NaveBar, Footer, GenaricSlider, TestimonialSlider, CardsListSection],
+  imports: [RouterOutlet, NaveBar, Footer, GenaricSlider, TestimonialSlider, CardsListSection, ImgDetails],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
