@@ -9,7 +9,7 @@ import { ImgDetails } from "./Profile/img-details/img-details";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NaveBar, Footer, GenaricSlider, TestimonialSlider, CardsListSection, ImgDetails],
+  imports: [RouterOutlet, NaveBar, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
