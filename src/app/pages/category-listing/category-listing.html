@@ -45,15 +45,17 @@
     <!-- Products Grid -->
     <div class="products-grid">
       @for (product of products; track product.id) {
-        <app-min-genaric-card
-          [badgeText]="product.badge"
-          [badgeGradient]="'linear-gradient(135deg, ' + product.badgeColor + ' 0%, ' + product.badgeColor + ' 100%)'"
-          [categoryText]="product.category"
-          [productTitle]="product.title"
-          [currentPrice]="product.currentPrice"
-          [originalPrice]="product.originalPrice"
-          [productImage]="product.image">
-        </app-min-genaric-card>
+        <div class="product-card-wrapper" (click)="goToProduct(product.id)">
+          <app-min-genaric-card
+            [badgeText]="product.badge"
+            [badgeGradient]="'linear-gradient(135deg, ' + product.badgeColor + ' 0%, ' + product.badgeColor + ' 100%)'"
+            [categoryText]="product.category"
+            [productTitle]="product.title"
+            [currentPrice]="product.currentPrice"
+            [originalPrice]="product.originalPrice"
+            [productImage]="product.image">
+          </app-min-genaric-card>
+        </div>
       }
     </div>
 

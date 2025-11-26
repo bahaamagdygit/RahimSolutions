@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { GenericFilter, FilterSection, FilterChangeEvent, autoFilterSections } from '../../../../Layout/filters/generic-filter/generic-filter';
 import { MinGenaricCard } from '../../../../Layout/genaric-card/min-genaric-card/min-genaric-card';
 
@@ -28,6 +29,8 @@ interface Product {
   styleUrl: './category-listing.css',
 })
 export class CategoryListing {
+  constructor(private router: Router) {}
+
   // Filter sections from demo data
   filterSections: FilterSection[] = autoFilterSections;
 
@@ -333,5 +336,10 @@ export class CategoryListing {
 
   getShowingEnd(): number {
     return Math.min(this.currentPage() * this.productsPerPage, this.totalProducts);
+  }
+
+  // Navigate to product details
+  goToProduct(productId: number) {
+    this.router.navigate(['/product', productId]);
   }
 }
