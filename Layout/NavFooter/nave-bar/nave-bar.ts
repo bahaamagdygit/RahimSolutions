@@ -179,7 +179,7 @@ export class NaveBar {
   // Profile menu items
   profileMenuItems = [
     { name: 'Favourites & Saved Ads', icon: 'heart', link: '/favourites' },
-    { name: 'Inbox', icon: 'inbox', link: '/inbox' },
+    { name: 'Inbox', icon: 'inbox', link: '/chat' },
     { name: 'Liked ads', icon: 'thumbs-up', link: '/liked' },
     { name: 'Partner with Rahim', icon: 'handshake', link: '/partner', subtitle: 'Post Ads & get optimized' },
     { name: 'Help and Support', icon: 'help', link: '/help' },

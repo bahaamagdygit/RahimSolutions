@@ -42,6 +42,10 @@ export const routes: Routes = [
         loadComponent: () => import('./Account/reset-password/reset-password').then(m => m.ResetPassword)
     },
     {
+        path: 'chat',
+        loadComponent: () => import('./pages/chat/chat').then(m => m.Chat)
+    },
+    {
         path: '',
         redirectTo: 'section',
         pathMatch: 'full'
