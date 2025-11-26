@@ -5,6 +5,10 @@ export const routes: Routes = [
         path: 'home',
         loadComponent: () => import('../app/pages/home-page/home-page').then(m => m.HomePage)
     },
+    {
+        path: 'category',
+        loadComponent: () => import('../app/pages/category-listing/category-listing').then(m => m.CategoryListing)
+    },
      {
         path: 'section',
         loadComponent: () => import('../../Layout/genaric-card/min-section/min-section').then(m => m.MinSection)

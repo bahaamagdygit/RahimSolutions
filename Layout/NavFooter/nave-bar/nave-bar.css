@@ -761,7 +761,6 @@ border-top: 1px solid #CED0D8;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
- 
   color: #30373D;
 
   text-decoration: none;
@@ -783,8 +782,7 @@ padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #9ca3af;
-}
+color: #30373D;}
 
 .category-link .category-icon svg {
   width: 16px;

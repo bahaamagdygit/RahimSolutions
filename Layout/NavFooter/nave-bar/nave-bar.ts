@@ -80,7 +80,7 @@ export class NaveBar {
 
   // Main categories shown in navbar bottom bar
   mainCategories = [
-    { name: 'Vehicles', icon: 'car', link: '/vehicles' },
+    { name: 'Vehicles', icon: 'car', link: '/category' },
     { name: 'Properties', icon: 'home', link: '/properties' },
     { name: 'Mobiles & Tablets', icon: 'mobile', link: '/mobiles' },
     { name: 'Electronics & Appliances', icon: 'tv', link: '/electronics' },

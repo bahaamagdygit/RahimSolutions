@@ -1,0 +1,92 @@
+<div class="category-listing-page">
+  <!-- Left Sidebar Filter -->
+  <aside class="filter-sidebar">
+    <app-generic-filter
+      [title]="'Auto'"
+      [sections]="filterSections"
+      [showBackArrow]="true"
+      (filterChange)="onFilterChange($event)"
+      (backClick)="onFilterBack()">
+    </app-generic-filter>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="listing-content">
+    <!-- Header with count and sort -->
+    <div class="listing-header">
+      <div class="showing-info">
+        Showing: {{ getShowingStart() }} - {{ getShowingEnd() }} Of {{ totalProducts }} Products
+      </div>
+
+      <div class="sort-dropdown">
+        <span class="sort-label">Sort By:</span>
+        <button class="sort-btn" (click)="toggleSortDropdown()">
+          <span class="sort-value">{{ getSortLabel() }}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+
+        @if (showSortDropdown()) {
+          <div class="sort-menu">
+            @for (option of sortOptions; track option.id) {
+              <button
+                class="sort-option"
+                [class.active]="selectedSort() === option.id"
+                (click)="selectSort(option.id)">
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid">
+      @for (product of products; track product.id) {
+        <app-min-genaric-card
+          [badgeText]="product.badge"
+          [badgeGradient]="'linear-gradient(135deg, ' + product.badgeColor + ' 0%, ' + product.badgeColor + ' 100%)'"
+          [categoryText]="product.category"
+          [productTitle]="product.title"
+          [currentPrice]="product.currentPrice"
+          [originalPrice]="product.originalPrice"
+          [productImage]="product.image">
+        </app-min-genaric-card>
+      }
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button
+        class="pagination-btn prev-btn"
+        [disabled]="currentPage() === 1"
+        (click)="previousPage()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="page-numbers">
+        @for (page of getPageNumbers(); track page) {
+          <button
+            class="page-btn"
+            [class.active]="currentPage() === page"
+            (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        }
+      </div>
+
+      <button
+        class="pagination-btn next-btn"
+        [disabled]="currentPage() === totalPages"
+        (click)="nextPage()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </main>
+</div>
