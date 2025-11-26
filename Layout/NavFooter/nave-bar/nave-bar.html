@@ -3,32 +3,146 @@
   <div class="navbar-top">
     <div class="navbar-container">
       <!-- Logo -->
-      <div class="navbar-logo">
+      <a routerLink="/" class="navbar-logo">
         <img src="/assts/imge/MainLogo.png" alt="Rahim Solutions" class="logo-img">
-       
-      </div>
+      </a>
 
-      <!-- Search Bar -->
-      <div class="navbar-search">
-        <!-- All Categories Dropdown -->
-        <button class="categories-btn" (click)="toggleCategories()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <!-- All Categories Button -->
+      <div class="all-categories-wrapper">
+        <button class="all-categories-btn" (click)="toggleAllCategories()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="3" width="7" height="7"></rect>
             <rect x="14" y="3" width="7" height="7"></rect>
             <rect x="14" y="14" width="7" height="7"></rect>
             <rect x="3" y="14" width="7" height="7"></rect>
           </svg>
-          All Categories
+          <span>All Categories</span>
         </button>
 
-        <!-- Search Input -->
+        <!-- All Categories Mega Menu -->
+        @if (showAllCategoriesMenu()) {
+          <div class="mega-menu">
+            <div class="mega-menu-body">
+              <div class="mega-menu-sidebar">
+                @for (category of allCategories; track category.name) {
+                  <button
+                    class="mega-menu-category"
+                    [class.active]="activeCategory() === category.name"
+                    (mouseenter)="setActiveCategory(category.name)">
+                    <span class="category-icon">
+                      @switch (category.icon) {
+                        @case ('car') {
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L19 11l-2-6H7L5 11l-2.16.86a1 1 0 0 0-.84.99V16h3"></path>
+                            <circle cx="6.5" cy="16.5" r="2.5"></circle>
+                            <circle cx="17.5" cy="16.5" r="2.5"></circle>
+                          </svg>
+                        }
+                        @case ('home') {
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                          </svg>
+                        }
+                        @case ('fashion') {
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
+                          </svg>
+                        }
+                        @case ('furniture') {
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"></path>
+                            <path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0z"></path>
+                            <path d="M4 18v2"></path>
+                            <path d="M20 18v2"></path>
+                          </svg>
+                        }
+                        @default {
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                          </svg>
+                        }
+                      }
+                    </span>
+                    <span class="category-name">{{ category.name }}</span>
+                    <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                }
+              </div>
+
+              <!-- Subcategories Panel -->
+              <div class="mega-menu-content">
+                @if (activeCategory()) {
+                  @for (category of allCategories; track category.name) {
+                    @if (activeCategory() === category.name) {
+                      <div class="subcategories-header">
+                        <h3>{{ category.name }}</h3>
+                        <a [routerLink]="category.link" class="view-all-link">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                          </svg>
+                        </a>
+                      </div>
+                      @if (category.subcategories && category.subcategories.length > 0) {
+                        <div class="subcategories-grid">
+                          @for (sub of category.subcategories; track sub.name) {
+                            <div class="subcategory-column">
+                              <a [routerLink]="sub.link" class="subcategory-title">
+                                {{ sub.name }}
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                  <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                              </a>
+                              @if (sub.items) {
+                                <ul class="subcategory-items">
+                                  @for (item of sub.items; track item) {
+                                    <li><a href="#">{{ item }}</a></li>
+                                  }
+                                </ul>
+                              }
+                            </div>
+                          }
+                        </div>
+                      }
+                    }
+                  }
+                }
+              </div>
+            </div>
+
+            <!-- App Download Banner -->
+            <div class="mega-menu-footer">
+              <div class="app-banner">
+                <div class="app-banner-phone">
+                  <img src="/assts/imge/app-preview.png" alt="App">
+                </div>
+                <div class="app-banner-content">
+                  <img src="/assts/imge/MainLogo.png" alt="Rahim Solutions" class="app-logo">
+                  <span class="app-title">Download App Now</span>
+                  <span class="app-subtitle">Available for iOS & Android</span>
+                </div>
+                <div class="app-store-icons">
+                  <img src="/assts/imge/app-store.png" alt="App Store">
+                  <img src="/assts/imge/google-play.png" alt="Google Play">
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Search Bar -->
+      <div class="navbar-search">
         <input
           type="text"
           class="search-input"
           placeholder="Search Ads"
           [(ngModel)]="searchQuery">
-
-        <!-- Search Button -->
         <button class="search-btn" (click)="onSearch()">
           Find
         </button>
@@ -36,33 +150,166 @@
 
       <!-- Right Side Actions -->
       <div class="navbar-actions">
-        <!-- Signup -->
-        <button class="action-link" routerLink="/regester">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          Signup
-        </button>
-
-        <!-- Login -->
-        <button class="action-link" routerLink="/login">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-            <polyline points="10 17 15 12 10 7"></polyline>
-            <line x1="15" y1="12" x2="3" y2="12"></line>
-          </svg>
-          Login
-        </button>
-
-        <!-- Language Selector with Dropdown -->
-        <div class="language-dropdown">
-          <button class="language-btn" (click)="toggleLanguageDropdown()">
-            <img [src]="selectedLanguage().flag" [alt]="selectedLanguage().name" class="flag-icon">
-            <span class="lang-text">{{ selectedLanguage().name }}</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron">
+        <!-- Location Dropdown -->
+        <div class="location-dropdown">
+          <button class="location-btn" (click)="toggleLocationDropdown()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>{{ selectedLocation() }}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
+          </button>
+          @if (showLocationDropdown()) {
+            <div class="location-menu">
+              @for (location of locations; track location) {
+                <button
+                  class="location-item"
+                  [class.active]="selectedLocation() === location"
+                  (click)="selectLocation(location)">
+                  {{ location }}
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        @if (isLoggedIn()) {
+          <!-- Logged In State -->
+          <div class="profile-dropdown">
+            <button class="profile-btn" (click)="toggleProfileDropdown()">
+              <img src="assts/imge/USER/USER.png" [alt]="currentUser()?.name" class="user-avatar">
+              <span class="user-name">Welcome, {{ currentUser()?.name }}</span>
+            </button>
+
+            <!-- Notification Badge -->
+            <button class="notification-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+              </svg>
+              <span class="notification-badge"></span>
+            </button>
+
+            <!-- Divider -->
+            <div class="navbar-divider"></div>
+
+            <!-- Favorites -->
+            <button class="icon-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#30373D" stroke="none">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+
+            @if (showProfileDropdown()) {
+              <div class="profile-menu">
+                <!-- Verify Account Banner -->
+                @if (!currentUser()?.isVerified) {
+                  <div class="verify-banner">
+                    <span>Verify your account</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M9 12l2 2 4-4"></path>
+                      <circle cx="12" cy="12" r="10"></circle>
+                    </svg>
+                  </div>
+                }
+
+                <!-- View Profile -->
+                <a routerLink="/profile" class="view-profile-btn">
+                  View and edit your profile
+                </a>
+
+                <!-- Menu Items -->
+                <div class="profile-menu-items">
+                  @for (item of profileMenuItems; track item.name) {
+                    <a [routerLink]="item.link" class="profile-menu-item">
+                      <span class="menu-icon">
+                        @switch (item.icon) {
+                          @case ('heart') {
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                          }
+                          @case ('inbox') {
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                              <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                            </svg>
+                          }
+                          @case ('thumbs-up') {
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                            </svg>
+                          }
+                          @case ('handshake') {
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path>
+                            </svg>
+                          }
+                          @case ('help') {
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <circle cx="12" cy="12" r="10"></circle>
+                              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                          }
+                          @case ('settings') {
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <circle cx="12" cy="12" r="3"></circle>
+                              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                          }
+                        }
+                      </span>
+                      <span class="menu-text">
+                        {{ item.name }}
+                        @if (item.subtitle) {
+                          <small>{{ item.subtitle }}</small>
+                        }
+                      </span>
+                    </a>
+                  }
+                </div>
+
+                <!-- Logout -->
+                <button class="logout-btn" (click)="logout()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                  <span>Logout</span>
+                </button>
+              </div>
+            }
+          </div>
+        } @else {
+          <!-- Not Logged In State -->
+          <button class="signup-btn" routerLink="/signup">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+            <span>Signup</span>
+          </button>
+
+          <button class="login-btn" routerLink="/login">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Login</span>
+          </button>
+        }
+
+        <!-- Language Dropdown -->
+        <div class="language-dropdown">
+          <button class="lang-toggle" (click)="toggleLanguageDropdown()">
+            <span>{{ selectedLanguage().name }}</span>
+            <img [src]="'https://flagcdn.com/w20/' + selectedLanguage().flag + '.png'" [alt]="selectedLanguage().name" class="lang-flag">
           </button>
 
           @if (showLanguageDropdown()) {
@@ -72,13 +319,8 @@
                   class="language-item"
                   [class.active]="selectedLanguage().code === lang.code"
                   (click)="selectLanguage(lang)">
-                  <img [src]="lang.flag" [alt]="lang.name" class="flag-icon">
+                  <img [src]="'https://flagcdn.com/w20/' + lang.flag + '.png'" [alt]="lang.name" class="lang-flag">
                   <span>{{ lang.name }}</span>
-                  @if (selectedLanguage().code === lang.code) {
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="check-icon">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  }
                 </button>
               }
             </div>
@@ -97,24 +339,72 @@
     </div>
   </div>
 
-  <!-- Bottom Categories Section -->
+  <!-- Bottom Categories Bar -->
   <div class="navbar-bottom">
     <div class="navbar-container">
       <div class="categories-list">
         @for (category of mainCategories; track category.name) {
-          <a [href]="category.link" class="category-link">
-            {{ category.name }}
+          <a [routerLink]="category.link" class="category-link">
+            <span class="category-icon">
+              @switch (category.icon) {
+                @case ('car') {
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L19 11l-2-6H7L5 11l-2.16.86a1 1 0 0 0-.84.99V16h3"></path>
+                    <circle cx="6.5" cy="16.5" r="2.5"></circle>
+                    <circle cx="17.5" cy="16.5" r="2.5"></circle>
+                  </svg>
+                }
+                @case ('home') {
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  </svg>
+                }
+                @case ('mobile') {
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                  </svg>
+                }
+                @case ('tv') {
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+                    <polyline points="17 2 12 7 7 2"></polyline>
+                  </svg>
+                }
+                @case ('furniture') {
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"></path>
+                    <path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0z"></path>
+                    <path d="M4 18v2"></path>
+                    <path d="M20 18v2"></path>
+                  </svg>
+                }
+                @case ('fashion') {
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
+                  </svg>
+                }
+                @case ('beauty') {
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                }
+              }
+            </span>
+            <span>{{ category.name }}</span>
           </a>
         }
 
-        <!-- More Categories -->
-        <button class="more-categories-btn">
+        <!-- More Categories Button -->
+        <button class="more-categories-btn" (click)="toggleAllCategories()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="1"></circle>
-            <circle cx="12" cy="5" r="1"></circle>
-            <circle cx="12" cy="19" r="1"></circle>
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
           </svg>
-          More Categories
+          <span>More Categories</span>
         </button>
       </div>
     </div>
