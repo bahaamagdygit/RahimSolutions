@@ -1,0 +1,127 @@
+<div class="filter-container">
+  <!-- Filter Header -->
+  <div class="filter-header">
+    <span class="filter-title">{{ title }}</span>
+    @if (showBackArrow) {
+      <button class="back-btn" (click)="onBackClick()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    }
+  </div>
+
+  <!-- Filter Sections -->
+  @for (section of sections; track section.id) {
+    <div class="filter-section" [class.expanded]="isSectionExpanded(section.id)">
+
+      <!-- Section Header (for expandable sections) -->
+      @if (section.type !== 'tabs') {
+        <button class="section-header" (click)="toggleSection(section.id)">
+          <span class="section-title">{{ section.title }}</span>
+          <svg
+            class="expand-icon"
+            [class.rotated]="isSectionExpanded(section.id)"
+            width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      } @else {
+        <!-- Non-expandable title for tabs -->
+        <div class="section-title-static">{{ section.title }}</div>
+      }
+
+      <!-- Section Content -->
+      <div class="section-content" [class.hidden]="section.type !== 'tabs' && !isSectionExpanded(section.id)">
+
+        <!-- TABS TYPE -->
+        @if (section.type === 'tabs' && section.options) {
+          <div class="tabs-container">
+            @for (option of section.options; track option.id) {
+              <button
+                class="tab-btn"
+                [class.active]="option.selected"
+                (click)="onTabSelect(section, option.id)">
+                {{ option.label }}
+              </button>
+            }
+          </div>
+        }
+
+        <!-- SEARCHABLE CHECKBOX TYPE -->
+        @if (section.type === 'searchable-checkbox') {
+          <div class="search-input-wrapper">
+            <input
+              type="text"
+              class="search-input"
+              [placeholder]="section.searchPlaceholder || 'Search...'"
+              [ngModel]="getSearchQuery(section.id)"
+              (ngModelChange)="updateSearchQuery(section.id, $event)">
+          </div>
+          <div class="checkbox-list">
+            @for (option of getFilteredOptions(section); track option.id) {
+              <label class="checkbox-item" [class.selected]="option.selected">
+                <input
+                  type="checkbox"
+                  [checked]="option.selected"
+                  (change)="onCheckboxToggle(section, option)">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">{{ option.label }}</span>
+                @if (option.count !== undefined) {
+                  <span class="checkbox-count">({{ option.count }})</span>
+                }
+              </label>
+            }
+          </div>
+        }
+
+        <!-- CHECKBOX TYPE (without search) -->
+        @if (section.type === 'checkbox' && section.options) {
+          <div class="checkbox-list">
+            @for (option of section.options; track option.id) {
+              <label class="checkbox-item" [class.selected]="option.selected">
+                <input
+                  type="checkbox"
+                  [checked]="option.selected"
+                  (change)="onCheckboxToggle(section, option)">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">{{ option.label }}</span>
+                @if (option.count !== undefined) {
+                  <span class="checkbox-count">({{ option.count }})</span>
+                }
+              </label>
+            }
+          </div>
+        }
+
+        <!-- RANGE TYPE -->
+        @if (section.type === 'range') {
+          <div class="range-container">
+            <div class="range-input-wrapper">
+              <input
+                type="number"
+                class="range-input"
+                [placeholder]="section.fromPlaceholder || 'From'"
+                [value]="section.range?.from ?? ''"
+                (input)="onRangeChange(section, 'from', $any($event.target).value)">
+            </div>
+            <div class="range-input-wrapper">
+              <input
+                type="number"
+                class="range-input"
+                [placeholder]="section.toPlaceholder || 'To'"
+                [value]="section.range?.to ?? ''"
+                (input)="onRangeChange(section, 'to', $any($event.target).value)">
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <!-- Section Divider -->
+      @if (section.type === 'tabs' || section.type === 'range') {
+        <div class="section-divider"></div>
+      }
+    </div>
+  }
+</div>
