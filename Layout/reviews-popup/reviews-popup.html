@@ -1,0 +1,129 @@
+@if (isOpen) {
+  <div class="popup-overlay" (click)="onBackdropClick($event)">
+    <div class="popup-container">
+      <!-- Header -->
+      <div class="popup-header">
+        <h2>Reviews</h2>
+        <button class="close-btn" (click)="close()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Rating Summary -->
+      <div class="rating-summary">
+        <div class="average-rating">
+          <span class="rating-number">{{ reviewsData.averageRating }}</span>
+          <div class="stars-container">
+            @for (star of getStarArray(); track star) {
+              <svg
+                class="star"
+                [class.filled]="isStarFilled(star, reviewsData.averageRating)"
+                [class.half]="star === Math.ceil(reviewsData.averageRating) && reviewsData.averageRating % 1 !== 0"
+                width="36"
+                height="36"
+                viewBox="0 0 24 24">
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                  fill="currentColor"/>
+              </svg>
+            }
+          </div>
+        </div>
+        <button class="write-review-btn" (click)="openWriteReview()">Write Review</button>
+      </div>
+
+      <!-- Write Review Form -->
+      @if (showWriteReview()) {
+        <div class="write-review-form">
+          <h3>Write Your Review</h3>
+          <div class="rating-input">
+            <span class="rating-label">Your Rating:</span>
+            <div class="stars-input">
+              @for (star of getStarArray(); track star) {
+                <svg
+                  class="star clickable"
+                  [class.filled]="isStarFilled(star, getDisplayRating())"
+                  [class.hovered]="isStarHovered(star)"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  (click)="setRating(star)"
+                  (mouseenter)="setHoverRating(star)"
+                  (mouseleave)="clearHoverRating()">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                    fill="currentColor"/>
+                </svg>
+              }
+            </div>
+          </div>
+          <textarea
+            class="comment-input"
+            placeholder="Write your review here..."
+            [ngModel]="newComment()"
+            (ngModelChange)="newComment.set($event)"
+            rows="4">
+          </textarea>
+          <div class="form-actions">
+            <button class="cancel-btn" (click)="cancelWriteReview()">Cancel</button>
+            <button
+              class="submit-btn"
+              [disabled]="newRating() === 0 || !newComment().trim()"
+              (click)="submitNewReview()">
+              Submit Review
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Reviews List -->
+      <div class="reviews-list">
+        @for (review of reviewsData.reviews; track review.id) {
+          <div class="review-card">
+            <div class="review-header">
+              <div class="reviewer-info">
+                <div class="reviewer-avatar">
+                  @if (review.userAvatar) {
+                    <img [src]="review.userAvatar" [alt]="review.userName">
+                  } @else {
+                    <div class="avatar-placeholder">
+                      {{ review.userName.charAt(0) }}
+                    </div>
+                  }
+                </div>
+                <div class="reviewer-details">
+                  <h4 class="reviewer-name">{{ review.userName }}</h4>
+                  <span class="review-date">{{ review.date }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="review-rating">
+              @for (star of getStarArray(); track star) {
+                <svg
+                  class="star small"
+                  [class.filled]="isStarFilled(star, review.rating)"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                    fill="currentColor"/>
+                </svg>
+              }
+            </div>
+            <p class="review-comment">{{ review.comment }}</p>
+          </div>
+        }
+
+        @if (reviewsData.reviews.length === 0) {
+          <div class="no-reviews">
+            <p>No reviews yet. Be the first to write a review!</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

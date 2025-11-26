@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ImgDetails, GalleryConfig } from '../../Profile/img-details/img-details';
 import { MinGenaricCard } from '../../../../Layout/genaric-card/min-genaric-card/min-genaric-card';
+import { ReviewsPopup, ReviewsData } from '../../../../Layout/reviews-popup/reviews-popup';
 
 interface Breadcrumb {
   label: string;
@@ -48,7 +49,7 @@ interface SimilarProduct {
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, RouterLink, ImgDetails, MinGenaricCard],
+  imports: [CommonModule, RouterLink, ImgDetails, MinGenaricCard, ReviewsPopup],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })
@@ -219,6 +220,39 @@ export class ProductDetails {
   // Slider state
   sliderIndex = signal(0);
 
+  // Reviews popup state
+  showReviewsPopup = signal(false);
+  reviewsData: ReviewsData = {
+    averageRating: 4.0,
+    totalReviews: 12,
+    reviews: [
+      {
+        id: 1,
+        userName: 'Sin Tae',
+        userAvatar: '/assts/imge/USER/USER.png',
+        date: '20 Des 2022, 08:00',
+        rating: 5,
+        comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl dui, fringilla ac venenatis ut, varius at arcu. Duis non mollis nisl.'
+      },
+      {
+        id: 2,
+        userName: 'Peg Legge',
+        userAvatar: '/assts/imge/USER/USER.png',
+        date: '20 Des 2022, 08:00',
+        rating: 2,
+        comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl dui, fringilla ac venenatis ut, varius at arcu. Duis non mollis nisl.'
+      },
+      {
+        id: 3,
+        userName: 'Jack Thompson',
+        userAvatar: '/assts/imge/USER/USER.png',
+        date: '20 Des 2022, 08:00',
+        rating: 2,
+        comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl dui, fringilla ac venenatis ut, varius at arcu. Duis non mollis nisl.'
+      }
+    ]
+  };
+
   togglePhone() {
     this.showPhone.update(v => !v);
   }
@@ -229,6 +263,29 @@ export class ProductDetails {
 
   chatWithSeller() {
     console.log('Opening chat with:', this.seller.name);
+  }
+
+  openReviewsPopup() {
+    this.showReviewsPopup.set(true);
+  }
+
+  closeReviewsPopup() {
+    this.showReviewsPopup.set(false);
+  }
+
+  onSubmitReview(review: { rating: number; comment: string }) {
+    const newReview = {
+      id: this.reviewsData.reviews.length + 1,
+      userName: 'Current User',
+      userAvatar: '/assts/imge/USER/USER.png',
+      date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      rating: review.rating,
+      comment: review.comment
+    };
+    this.reviewsData.reviews.unshift(newReview);
+    this.reviewsData.totalReviews++;
+    const totalRating = this.reviewsData.reviews.reduce((sum, r) => sum + r.rating, 0);
+    this.reviewsData.averageRating = Math.round((totalRating / this.reviewsData.reviews.length) * 10) / 10;
   }
 
   // Slider navigation
