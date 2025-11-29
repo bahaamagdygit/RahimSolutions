@@ -236,6 +236,12 @@ export class NaveBar {
 
   toggleMobileMenu() {
     this.showMobileMenu.update(val => !val);
+    // Lock body scroll when mobile menu is open
+    if (this.showMobileMenu()) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   }
 
   setActiveCategory(categoryName: string) {
