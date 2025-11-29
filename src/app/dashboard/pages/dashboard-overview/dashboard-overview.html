@@ -1,0 +1,220 @@
+<div class="dashboard-overview">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Dashboard Overview</h1>
+      <p class="page-subtitle">Welcome back! Here's what's happening with your store today.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4.66667 6.66667L8 10L11.3333 6.66667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 10V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Export Report
+      </button>
+      <button class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 3.33334V12.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3.33334 8H12.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Add Product
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    @for (stat of statsCards; track stat.title) {
+      <div class="stat-card" [class]="'stat-' + stat.color">
+        <div class="stat-icon">
+          @switch (stat.icon) {
+            @case ('revenue') {
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2V22M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+            @case ('orders') {
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+            @case ('products') {
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M21 16V8C20.9996 7.6493 20.9071 7.3048 20.7315 7.00017C20.556 6.69555 20.3037 6.44173 20 6.26399L13 2.26399C12.696 2.08679 12.3511 1.99353 12 1.99353C11.6489 1.99353 11.304 2.08679 11 2.26399L4 6.26399C3.69626 6.44173 3.44398 6.69555 3.26846 7.00017C3.09294 7.3048 3.00036 7.6493 3 8V16C3.00036 16.3507 3.09294 16.6952 3.26846 16.9998C3.44398 17.3045 3.69626 17.5583 4 17.736L11 21.736C11.304 21.9132 11.6489 22.0065 12 22.0065C12.3511 22.0065 12.696 21.9132 13 21.736L20 17.736C20.3037 17.5583 20.556 17.3045 20.7315 16.9998C20.9071 16.6952 20.9996 16.3507 21 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3.27002 6.96L12 12.01L20.73 6.96" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 22.08V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+            @case ('views') {
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+          }
+        </div>
+        <div class="stat-content">
+          <span class="stat-title">{{ stat.title }}</span>
+          <span class="stat-value">{{ stat.value }}</span>
+          <div class="stat-change" [class.positive]="stat.changeType === 'increase'" [class.negative]="stat.changeType === 'decrease'">
+            @if (stat.changeType === 'increase') {
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M6 9.5V2.5M6 2.5L2.5 6M6 2.5L9.5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            } @else {
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M6 2.5V9.5M6 9.5L9.5 6M6 9.5L2.5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+            <span>{{ stat.change }}%</span>
+            <span class="change-period">vs last month</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Charts and Tables Row -->
+  <div class="content-grid">
+    <!-- Sales Chart -->
+    <div class="card chart-card">
+      <div class="card-header">
+        <h2 class="card-title">Sales Overview</h2>
+        <select class="period-select">
+          <option value="7d">Last 7 days</option>
+          <option value="30d" selected>Last 30 days</option>
+          <option value="90d">Last 90 days</option>
+          <option value="1y">Last year</option>
+        </select>
+      </div>
+      <div class="chart-container">
+        <div class="chart-placeholder">
+          <div class="chart-bars">
+            @for (value of salesData.values; track $index; let i = $index) {
+              <div class="chart-bar-wrapper">
+                <div class="chart-bar" [style.height.%]="(value / 45000) * 100"></div>
+                <span class="chart-label">{{ salesData.labels[i] }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activities -->
+    <div class="card activities-card">
+      <div class="card-header">
+        <h2 class="card-title">Recent Activities</h2>
+        <a routerLink="/dashboard/activities" class="view-all-link">View All</a>
+      </div>
+      <div class="activities-list">
+        @for (activity of recentActivities; track activity.id) {
+          <div class="activity-item">
+            <div class="activity-icon" [class]="'activity-' + activity.type">
+              @switch (activity.type) {
+                @case ('order') {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 1.33334L2 4.00001V13.3333C2 13.687 2.14048 14.0261 2.39052 14.2761C2.64057 14.5262 2.97971 14.6667 3.33333 14.6667H12.6667C13.0203 14.6667 13.3594 14.5262 13.6095 14.2761C13.8595 14.0261 14 13.687 14 13.3333V4.00001L12 1.33334H4Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                }
+                @case ('review') {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1.33334L9.79333 5.00001L13.8533 5.57334L10.9267 8.42668L11.5867 12.4733L8 10.5867L4.41333 12.4733L5.07333 8.42668L2.14667 5.57334L6.20667 5.00001L8 1.33334Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                  </svg>
+                }
+                @case ('message') {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M14 8C14 11.3137 11.3137 14 8 14C6.8 14 5.67333 13.68 4.70667 13.1333L2 14L2.86667 11.2933C2.32 10.3267 2 9.2 2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8Z" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                }
+                @case ('product') {
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2 5.33334L8 2L14 5.33334V10.6667L8 14L2 10.6667V5.33334Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                  </svg>
+                }
+              }
+            </div>
+            <div class="activity-content">
+              <p class="activity-message">{{ activity.message }}</p>
+              <span class="activity-time">{{ activity.time }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Orders and Products Row -->
+  <div class="content-grid two-cols">
+    <!-- Recent Orders -->
+    <div class="card orders-card">
+      <div class="card-header">
+        <h2 class="card-title">Recent Orders</h2>
+        <a routerLink="/dashboard/orders" class="view-all-link">View All</a>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Product</th>
+              <th>Customer</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of recentOrders; track order.id) {
+              <tr>
+                <td class="order-id">{{ order.id }}</td>
+                <td class="product-cell">
+                  <div class="product-info">
+                    <div class="product-image-placeholder"></div>
+                    <span>{{ order.product }}</span>
+                  </div>
+                </td>
+                <td>{{ order.customer }}</td>
+                <td class="amount">{{ formatCurrency(order.amount) }}</td>
+                <td>
+                  <span class="status-badge" [class]="getStatusClass(order.status)">
+                    {{ order.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Top Products -->
+    <div class="card products-card">
+      <div class="card-header">
+        <h2 class="card-title">Top Products</h2>
+        <a routerLink="/dashboard/products" class="view-all-link">View All</a>
+      </div>
+      <div class="top-products-list">
+        @for (product of topProducts; track product.id; let i = $index) {
+          <div class="top-product-item">
+            <span class="product-rank">{{ i + 1 }}</span>
+            <div class="product-image-placeholder small"></div>
+            <div class="product-details">
+              <span class="product-name">{{ product.name }}</span>
+              <span class="product-sales">{{ product.sales }} sales</span>
+            </div>
+            <div class="product-revenue">
+              <span class="revenue-amount">{{ formatCurrency(product.revenue) }}</span>
+              <span class="stock-info" [class.low-stock]="product.stock < 10">
+                {{ product.stock }} in stock
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
