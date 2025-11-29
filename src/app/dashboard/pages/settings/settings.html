@@ -1,0 +1,318 @@
+<div class="settings-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Settings</h1>
+      <p class="page-subtitle">Manage your account and preferences</p>
+    </div>
+  </div>
+
+  <div class="settings-container">
+    <!-- Sidebar Tabs -->
+    <div class="settings-sidebar">
+      @for (tab of tabs; track tab.id) {
+        <button
+          class="tab-btn"
+          [class.active]="activeTab() === tab.id"
+          (click)="setActiveTab(tab.id)"
+        >
+          <span class="tab-icon">
+            @switch (tab.icon) {
+              @case ('user') {
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M15 15.75V14.25C15 13.4544 14.6839 12.6913 14.1213 12.1287C13.5587 11.5661 12.7956 11.25 12 11.25H6C5.20435 11.25 4.44129 11.5661 3.87868 12.1287C3.31607 12.6913 3 13.4544 3 14.25V15.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="9" cy="5.25" r="3" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              }
+              @case ('building') {
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M1.5 15.75H16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2.25 15.75V4.5C2.25 3.90326 2.48705 3.33097 2.90901 2.90901C3.33097 2.48705 3.90326 2.25 4.5 2.25H13.5C14.0967 2.25 14.669 2.48705 15.091 2.90901C15.5129 3.33097 15.75 3.90326 15.75 4.5V15.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6 6H6.0075" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M9 6H9.0075" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M12 6H12.0075" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M6 9.75H6.0075" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M9 9.75H9.0075" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M12 9.75H12.0075" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M6.75 15.75V12.75C6.75 12.5511 6.82902 12.3603 6.96967 12.2197C7.11032 12.079 7.30109 12 7.5 12H10.5C10.6989 12 10.8897 12.079 11.0303 12.2197C11.171 12.3603 11.25 12.5511 11.25 12.75V15.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              }
+              @case ('bell') {
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M13.5 6C13.5 4.80653 13.0259 3.66193 12.182 2.81802C11.3381 1.97411 10.1935 1.5 9 1.5C7.80653 1.5 6.66193 1.97411 5.81802 2.81802C4.97411 3.66193 4.5 4.80653 4.5 6C4.5 11.25 2.25 12.75 2.25 12.75H15.75C15.75 12.75 13.5 11.25 13.5 6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.2975 15.75C10.1657 15.9773 9.9764 16.166 9.74868 16.2971C9.52097 16.4283 9.26273 16.4973 9 16.4973C8.73727 16.4973 8.47903 16.4283 8.25132 16.2971C8.0236 16.166 7.83433 15.9773 7.7025 15.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              }
+              @case ('lock') {
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <rect x="3" y="8.25" width="12" height="8.25" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M5.25 8.25V5.25C5.25 4.25544 5.64509 3.30161 6.34835 2.59835C7.05161 1.89509 8.00544 1.5 9 1.5C9.99456 1.5 10.9484 1.89509 11.6517 2.59835C12.3549 3.30161 12.75 4.25544 12.75 5.25V8.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              }
+            }
+          </span>
+          <span class="tab-label">{{ tab.label }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Settings Content -->
+    <div class="settings-content">
+      <!-- Profile Tab -->
+      @if (activeTab() === 'profile') {
+        <div class="settings-card">
+          <div class="card-header">
+            <h2>Profile Information</h2>
+            <p>Update your personal details and profile picture</p>
+          </div>
+
+          <div class="card-body">
+            <!-- Profile Picture -->
+            <div class="profile-picture-section">
+              <div class="avatar-placeholder"></div>
+              <div class="avatar-actions">
+                <button class="btn btn-outline">Change Photo</button>
+                <button class="btn btn-text">Remove</button>
+              </div>
+            </div>
+
+            <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="settings-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" formControlName="firstName" />
+                </div>
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" formControlName="lastName" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" formControlName="email" />
+              </div>
+
+              <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" formControlName="phone" />
+              </div>
+
+              <div class="form-group">
+                <label>Bio</label>
+                <textarea formControlName="bio" rows="3"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      }
+
+      <!-- Company Tab -->
+      @if (activeTab() === 'company') {
+        <div class="settings-card">
+          <div class="card-header">
+            <h2>Company Information</h2>
+            <p>Manage your business details and branding</p>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="companyForm" (ngSubmit)="saveCompany()" class="settings-form">
+              <div class="form-group">
+                <label>Company Name</label>
+                <input type="text" formControlName="companyName" />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Company Type</label>
+                  <select formControlName="companyType">
+                    <option value="sole-proprietorship">Sole Proprietorship</option>
+                    <option value="partnership">Partnership</option>
+                    <option value="llc">Limited Liability Company (LLC)</option>
+                    <option value="corporation">Corporation</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Company Size</label>
+                  <select formControlName="companySize">
+                    <option value="1-10">1-10 employees</option>
+                    <option value="11-50">11-50 employees</option>
+                    <option value="51-200">51-200 employees</option>
+                    <option value="201-500">201-500 employees</option>
+                    <option value="500+">500+ employees</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Website</label>
+                <input type="url" formControlName="website" />
+              </div>
+
+              <div class="form-group">
+                <label>Address</label>
+                <input type="text" formControlName="address" />
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea formControlName="description" rows="3"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      }
+
+      <!-- Notifications Tab -->
+      @if (activeTab() === 'notifications') {
+        <div class="settings-card">
+          <div class="card-header">
+            <h2>Notification Preferences</h2>
+            <p>Choose how you want to receive notifications</p>
+          </div>
+
+          <div class="card-body">
+            <div class="notification-section">
+              <h3>Email Notifications</h3>
+              <div class="notification-list">
+                <div class="notification-item">
+                  <div class="notification-info">
+                    <span class="notification-title">Order Updates</span>
+                    <span class="notification-desc">Receive emails about new orders and status changes</span>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" [checked]="notificationSettings().emailOrders" (change)="toggleNotification('emailOrders')" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-info">
+                    <span class="notification-title">Messages</span>
+                    <span class="notification-desc">Get notified when customers send you messages</span>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" [checked]="notificationSettings().emailMessages" (change)="toggleNotification('emailMessages')" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-info">
+                    <span class="notification-title">Marketing</span>
+                    <span class="notification-desc">Receive tips and promotional offers</span>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" [checked]="notificationSettings().emailMarketing" (change)="toggleNotification('emailMarketing')" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="notification-section">
+              <h3>Push Notifications</h3>
+              <div class="notification-list">
+                <div class="notification-item">
+                  <div class="notification-info">
+                    <span class="notification-title">Order Updates</span>
+                    <span class="notification-desc">Get instant notifications for new orders</span>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" [checked]="notificationSettings().pushOrders" (change)="toggleNotification('pushOrders')" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-info">
+                    <span class="notification-title">Messages</span>
+                    <span class="notification-desc">Real-time notifications for new messages</span>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" [checked]="notificationSettings().pushMessages" (change)="toggleNotification('pushMessages')" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div class="notification-item">
+                  <div class="notification-info">
+                    <span class="notification-title">Marketing</span>
+                    <span class="notification-desc">Push notifications for promotions</span>
+                  </div>
+                  <label class="toggle">
+                    <input type="checkbox" [checked]="notificationSettings().pushMarketing" (change)="toggleNotification('pushMarketing')" />
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary" (click)="saveNotifications()">Save Preferences</button>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Security Tab -->
+      @if (activeTab() === 'security') {
+        <div class="settings-card">
+          <div class="card-header">
+            <h2>Security Settings</h2>
+            <p>Manage your password and security preferences</p>
+          </div>
+
+          <div class="card-body">
+            <div class="security-section">
+              <h3>Change Password</h3>
+              <form class="settings-form">
+                <div class="form-group">
+                  <label>Current Password</label>
+                  <input type="password" placeholder="Enter current password" />
+                </div>
+                <div class="form-group">
+                  <label>New Password</label>
+                  <input type="password" placeholder="Enter new password" />
+                </div>
+                <div class="form-group">
+                  <label>Confirm New Password</label>
+                  <input type="password" placeholder="Confirm new password" />
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">Update Password</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="security-section">
+              <h3>Two-Factor Authentication</h3>
+              <div class="security-option">
+                <div class="option-info">
+                  <span class="option-title">Enable 2FA</span>
+                  <span class="option-desc">Add an extra layer of security to your account</span>
+                </div>
+                <button class="btn btn-outline">Enable</button>
+              </div>
+            </div>
+
+            <div class="security-section danger">
+              <h3>Danger Zone</h3>
+              <div class="security-option">
+                <div class="option-info">
+                  <span class="option-title">Delete Account</span>
+                  <span class="option-desc">Permanently delete your account and all associated data</span>
+                </div>
+                <button class="btn btn-danger">Delete Account</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
