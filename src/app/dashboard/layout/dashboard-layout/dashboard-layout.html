@@ -1,0 +1,211 @@
+<div class="dashboard-container" [class.sidebar-collapsed]="sidebarCollapsed()">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-section">
+        @if (!sidebarCollapsed()) {
+          <img src="/assts/imge/MainLogo.png" alt="Rahim Solutions" class="logo" />
+        } @else {
+          <img src="/assts/imge/MainLogo.png" alt="Rahim Solutions" class="logo-mini" />
+        }
+      </div>
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          @if (sidebarCollapsed()) {
+            <path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          } @else {
+            <path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          }
+        </svg>
+      </button>
+    </div>
+
+    <!-- User Profile Section -->
+    <div class="user-profile">
+      <img [src]="currentUser().avatar" alt="User" class="user-avatar" />
+      @if (!sidebarCollapsed()) {
+        <div class="user-info">
+          <span class="user-name">{{ currentUser().name }}</span>
+          <span class="company-name">{{ currentUser().companyName }}</span>
+        </div>
+        @if (currentUser().isVerified) {
+          <span class="verified-badge" title="Verified">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="8" fill="#10B981"/>
+              <path d="M5 8L7 10L11 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        }
+      }
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="sidebar-nav">
+      <ul class="nav-list">
+        @for (item of menuItems; track item.name) {
+          <li class="nav-item">
+            <a [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: item.link === '/dashboard'}" class="nav-link" [title]="item.name">
+              <span class="nav-icon">
+                @switch (item.icon) {
+                  @case ('dashboard') {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <rect x="2" y="2" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                      <rect x="11" y="2" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                      <rect x="2" y="11" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                      <rect x="11" y="11" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                  }
+                  @case ('products') {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M2 6L10 2L18 6V14L10 18L2 14V6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                      <path d="M10 10V18" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M2 6L10 10L18 6" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                  }
+                  @case ('orders') {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M4 2H16C17.1 2 18 2.9 18 4V16C18 17.1 17.1 18 16 18H4C2.9 18 2 17.1 2 16V4C2 2.9 2.9 2 4 2Z" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M6 6H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M6 10H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M6 14H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  }
+                  @case ('messages') {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M18 10C18 14.4183 14.4183 18 10 18C8.5 18 7.1 17.6 5.9 16.9L2 18L3.1 14.1C2.4 12.9 2 11.5 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10Z" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M6 9H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M6 12H10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  }
+                  @case ('analytics') {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M2 18H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M4 14V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M8 14V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M12 14V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M16 14V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  }
+                  @case ('reviews') {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M10 2L12.09 6.26L16.86 6.95L13.43 10.28L14.18 15.05L10 12.84L5.82 15.05L6.57 10.28L3.14 6.95L7.91 6.26L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                  }
+                  @case ('documents') {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M12 2H5C3.9 2 3 2.9 3 4V16C3 17.1 3.9 18 5 18H15C16.1 18 17 17.1 17 16V7L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                      <path d="M12 2V7H17" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                      <path d="M7 10H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M7 14H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  }
+                }
+              </span>
+              @if (!sidebarCollapsed()) {
+                <span class="nav-text">{{ item.name }}</span>
+                @if (item.badge) {
+                  <span class="nav-badge">{{ item.badge }}</span>
+                }
+              }
+            </a>
+          </li>
+        }
+      </ul>
+
+      <div class="nav-divider"></div>
+
+      <ul class="nav-list bottom-nav">
+        @for (item of bottomMenuItems; track item.name) {
+          <li class="nav-item">
+            <a [routerLink]="item.link" routerLinkActive="active" class="nav-link" [title]="item.name">
+              <span class="nav-icon">
+                @switch (item.icon) {
+                  @case ('settings') {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M10 2V4M10 16V18M18 10H16M4 10H2M15.66 4.34L14.24 5.76M5.76 14.24L4.34 15.66M15.66 15.66L14.24 14.24M5.76 5.76L4.34 4.34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  }
+                  @case ('help') {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M7.5 7.5C7.5 6.12 8.62 5 10 5C11.38 5 12.5 6.12 12.5 7.5C12.5 8.88 11.38 10 10 10V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <circle cx="10" cy="14" r="1" fill="currentColor"/>
+                    </svg>
+                  }
+                }
+              </span>
+              @if (!sidebarCollapsed()) {
+                <span class="nav-text">{{ item.name }}</span>
+              }
+            </a>
+          </li>
+        }
+        <li class="nav-item">
+          <button class="nav-link logout-btn" (click)="logout()" title="Logout">
+            <span class="nav-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7 18H4C3.44772 18 3 17.5523 3 17V3C3 2.44772 3.44772 2 4 2H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M14 14L18 10L14 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 10H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            @if (!sidebarCollapsed()) {
+              <span class="nav-text">Logout</span>
+            }
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" (click)="toggleSidebar()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M3 6H21M3 12H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="search-box">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="9" cy="9" r="6" stroke="#9CA3AF" stroke-width="1.5"/>
+            <path d="M14 14L18 18" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Search products, orders..." />
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button class="header-btn notification-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M16 7C16 5.4087 15.3679 3.88258 14.2426 2.75736C13.1174 1.63214 11.5913 1 10 1C8.4087 1 6.88258 1.63214 5.75736 2.75736C4.63214 3.88258 4 5.4087 4 7C4 14 1 16 1 16H19C19 16 16 14 16 7Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11.73 19C11.5542 19.3031 11.3019 19.5547 10.9982 19.7295C10.6946 19.9044 10.3504 19.9965 10 19.9965C9.64964 19.9965 9.30541 19.9044 9.00179 19.7295C8.69818 19.5547 8.44583 19.3031 8.27 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="notification-badge">3</span>
+        </button>
+
+        <button class="header-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M18 10C18 14.4183 14.4183 18 10 18C8.5 18 7.1 17.6 5.9 16.9L2 18L3.1 14.1C2.4 12.9 2 11.5 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10Z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+
+        <div class="user-menu">
+          <img [src]="currentUser().avatar" alt="User" class="user-avatar-small" />
+          <span class="user-name-small">{{ currentUser().name }}</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
