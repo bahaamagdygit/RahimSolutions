@@ -1,10 +1,9 @@
+@if (showNavFooter()) {
+  <app-nave-bar></app-nave-bar>
+}
 
- <app-nave-bar></app-nave-bar>
- <!-- <app-genaric-slider></app-genaric-slider>
- <app-testimonial-slider></app-testimonial-slider>
- <app-cards-list-section></app-cards-list-section>\
- <app-img-details></app-img-details> -->
+<router-outlet />
 
-  <router-outlet />
-
-<app-footer></app-footer>
+@if (showNavFooter()) {
+  <app-footer></app-footer>
+}
