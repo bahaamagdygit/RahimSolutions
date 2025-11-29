@@ -1,0 +1,46 @@
+<div class="product-grid-section">
+  <!-- Header -->
+  <div class="section-header">
+    <h2 class="section-title">
+      {{ title() }}
+      <span class="product-count">{{ totalCount() }}</span>
+    </h2>
+
+    @if (showSearch()) {
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search ads in profile"
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="onSearch()">
+        <button class="search-btn" (click)="onSearch()">Find</button>
+      </div>
+    }
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" [style.--columns]="columns()">
+    @for (product of products(); track product.id) {
+      <app-min-genaric-card
+        [productTitle]="product.title"
+        [currentPrice]="product.currentPrice"
+        [originalPrice]="product.originalPrice"
+        [productImage]="product.image"
+        [badgeText]="product.badge"
+        [categoryText]="product.category"
+        [discountPercent]="product.discount || ''"
+        (click)="onProductClick(product)">
+      </app-min-genaric-card>
+    }
+  </div>
+
+  <!-- View All Button -->
+  @if (showViewAll() && products().length > 0) {
+    <div class="view-all-wrapper">
+      <button class="btn-view-all" (click)="onViewAll()">
+        Show All Ads
+      </button>
+    </div>
+  }
+</div>
