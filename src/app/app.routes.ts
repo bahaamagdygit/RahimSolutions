@@ -50,6 +50,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/chat/chat').then(m => m.Chat)
     },
     {
+        path: 'seller/:id',
+        loadComponent: () => import('./pages/seller-profile/seller-profile').then(m => m.SellerProfile)
+    },
+    {
         path: 'dashboard',
         loadComponent: () => import('./dashboard/layout/dashboard-layout/dashboard-layout').then(m => m.DashboardLayout),
         children: [
