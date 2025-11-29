@@ -1,0 +1,76 @@
+<div class="reviews-section">
+  <!-- Header -->
+  <div class="section-header">
+    <div class="header-left">
+      <h2 class="section-title">{{ title() }}</h2>
+      <div class="rating-summary">
+        <span class="rating-value">{{ averageRating }}</span>
+        <app-star-rating [rating]="averageRating()" [size]="24"></app-star-rating>
+      </div>
+    </div>
+    @if (showWriteReview() && !isWriting()) {
+      <button class="btn-write-review" (click)="onWriteReview()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+        </svg>
+        Write Review
+      </button>
+    }
+  </div>
+
+  <!-- Write Review Form -->
+  @if (isWriting()) {
+    <div class="write-review-form">
+      <div class="form-header">
+        <h3>Write Your Review</h3>
+        <button class="btn-close" (click)="onCancelReview()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="rating-select">
+        <span class="label">Your Rating:</span>
+        <app-star-rating
+          [rating]="newRating()"
+          [size]="28"
+          [interactive]="true"
+          (ratingChange)="onRatingChange($event)">
+        </app-star-rating>
+      </div>
+
+      <textarea
+        class="review-textarea"
+        placeholder="Share your experience..."
+        rows="4"
+        [(ngModel)]="newComment">
+      </textarea>
+
+      <div class="form-actions">
+        <button class="btn-cancel" (click)="onCancelReview()">Cancel</button>
+        <button
+          class="btn-submit"
+          [disabled]="newRating() === 0 || !newComment().trim()"
+          (click)="onSubmitReview()">
+          Submit Review
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Reviews List -->
+  <div class="reviews-list">
+    @for (review of getDisplayedReviews(); track review.id) {
+      <app-review-card [review]="review"></app-review-card>
+    }
+
+    @if (reviews().length === 0) {
+      <div class="no-reviews">
+        <p>No reviews yet. Be the first to write one!</p>
+      </div>
+    }
+  </div>
+</div>

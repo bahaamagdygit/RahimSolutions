@@ -1,0 +1,13 @@
+<div class="review-card" [class.compact]="compact()">
+  <div class="review-header">
+    <div class="reviewer-info">
+      <img [src]="review().userAvatar" [alt]="review().userName" class="reviewer-avatar">
+      <div class="reviewer-details">
+        <span class="reviewer-name">{{ review().userName }}</span>
+        <span class="review-date">{{ review().date }}</span>
+      </div>
+    </div>
+    <app-star-rating [rating]="review().rating" [size]="16"></app-star-rating>
+  </div>
+  <p class="review-comment">{{ review().comment }}</p>
+</div>
