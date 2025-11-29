@@ -731,9 +731,10 @@ background: linear-gradient(180deg, #F2F1F0 0%, #FFFFFF 100%);
 
 /* ===== BOTTOM CATEGORIES BAR ===== */
 .navbar-bottom {
-  /* background: #111827; */
+  background: #ffffff;
   padding: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .navbar-bottom .navbar-container {
@@ -746,51 +747,84 @@ background: linear-gradient(180deg, #F2F1F0 0%, #FFFFFF 100%);
   display: flex;
   align-items: center;
   justify-content: flex-start;
-background-color:#F2F1F0 ;
-
-
-border-top: 1px solid #CED0D8;
+  background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
   gap: 0;
   width: 100%;
-  padding-left: 2rem;
-  border-top: 1px solid #CED0D8
+  padding: 0 2rem;
 }
 
 .category-link {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  color: #30373D;
-
+  padding: 1rem 1.25rem;
+  color: #4b5563;
   text-decoration: none;
-  font-size: 0.8125rem;
-  font-weight: 400;
+  font-size: 0.875rem;
+  font-weight: 500;
   white-space: nowrap;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
   border-bottom: 2px solid transparent;
 }
 
+.category-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
 .category-link:hover {
-  color: #30373D;
-background: #4285F433;
-border-radius: 10px;
-padding: 10px;
+  color: #667eea;
+  background: linear-gradient(180deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.04) 100%);
+}
+
+.category-link:hover::after {
+  width: 80%;
 }
 
 .category-link .category-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-color: #30373D;}
+  color: #6b7280;
+  transition: all 0.3s ease;
+}
 
 .category-link .category-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
 }
 
 .category-link:hover .category-icon {
-  color: #ffffff;
+  color: #667eea;
+  transform: translateY(-1px);
+}
+
+.category-link:hover .category-icon svg {
+  transform: scale(1.1);
+}
+
+/* Active state for category links */
+.category-link.active {
+  color: #667eea;
+  background: linear-gradient(180deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+.category-link.active::after {
+  width: 80%;
+}
+
+.category-link.active .category-icon {
+  color: #667eea;
 }
 
 /* More Categories Button - positioned at end */
@@ -798,25 +832,44 @@ color: #30373D;}
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 1.5rem;
   border: none;
-    color: #30373D;
-
-  font-size: 0.8125rem;
-  font-weight: 500;
+  background: transparent;
+  color: #4b5563;
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   margin-left: auto;
   flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.more-categories-btn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 24px;
+  background: #e5e7eb;
 }
 
 .more-categories-btn svg {
   width: 16px;
   height: 16px;
+  transition: transform 0.3s ease;
 }
 
 .more-categories-btn:hover {
-  /* background: #2563eb; */
+  color: #667eea;
+  background: linear-gradient(180deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.04) 100%);
+}
+
+.more-categories-btn:hover svg {
+  transform: rotate(90deg);
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
@@ -827,6 +880,11 @@ color: #30373D;}
 
   .category-link {
     padding: 0.875rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .categories-list {
+    padding: 0 1.5rem;
   }
 }
 
@@ -852,7 +910,7 @@ color: #30373D;}
   }
 
   .category-link {
-    padding: 0.75rem 0.75rem;
+    padding: 0.875rem 0.875rem;
     font-size: 0.75rem;
   }
 }
@@ -907,8 +965,16 @@ color: #30373D;}
   }
 
   .category-link {
-    padding: 0.75rem 0.625rem;
-    font-size: 0.6875rem;
+    padding: 0.875rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .categories-list {
+    padding: 0 1rem;
+  }
+
+  .more-categories-btn::before {
+    display: none;
   }
 }
 

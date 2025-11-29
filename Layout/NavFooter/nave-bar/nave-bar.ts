@@ -1,7 +1,7 @@
 import { Component, signal, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from "@angular/router";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 
 interface Category {
   name: string;
@@ -39,10 +39,10 @@ export class NaveBar {
   activeCategory = signal<string | null>(null);
 
   // Language state
-  selectedLanguage = signal({ code: 'ar', name: 'اللغه العربية', flag: 'sa' });
+  selectedLanguage = signal({ code: 'ar', name: 'اللغه العربية', shortName: 'AR', flag: 'sa' });
   languages = [
-    { code: 'ar', name: 'اللغه العربية', flag: 'sa' },
-    { code: 'en', name: 'English', flag: 'us' },
+    { code: 'ar', name: 'اللغه العربية', shortName: 'AR', flag: 'sa' },
+    { code: 'en', name: 'English', shortName: 'EN', flag: 'us' },
   ];
 
   // User authentication state
@@ -80,6 +80,7 @@ export class NaveBar {
 
   // Main categories shown in navbar bottom bar
   mainCategories = [
+     { name: 'Home', icon: 'home', link: '/home' },
     { name: 'Vehicles', icon: 'car', link: '/category' },
     { name: 'Properties', icon: 'home', link: '/properties' },
     { name: 'Mobiles & Tablets', icon: 'mobile', link: '/mobiles' },
@@ -251,7 +252,7 @@ export class NaveBar {
     this.showLanguageDropdown.update(val => !val);
   }
 
-  selectLanguage(language: { code: string; name: string; flag: string }) {
+  selectLanguage(language: { code: string; name: string; shortName: string; flag: string }) {
     this.selectedLanguage.set(language);
     this.showLanguageDropdown.set(false);
   }
