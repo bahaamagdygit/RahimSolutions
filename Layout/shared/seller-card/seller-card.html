@@ -1,0 +1,64 @@
+<div class="seller-card" [class.compact]="compact()" [class.with-cover]="showCover()">
+  @if (showCover() && seller().coverImage) {
+    <div class="seller-cover">
+      <img [src]="seller().coverImage" alt="Cover">
+    </div>
+  }
+
+  <div class="seller-content">
+    <div class="seller-logo-wrapper" [class.has-cover]="showCover()">
+      <img [src]="seller().logo" [alt]="seller().name" class="seller-logo">
+    </div>
+
+    <div class="seller-info">
+      <div class="seller-name-row">
+        @if (linkToProfile()) {
+          <a [routerLink]="'/seller/' + seller().id" class="seller-name">{{ seller().name }}</a>
+        } @else {
+          <span class="seller-name">{{ seller().name }}</span>
+        }
+        @if (seller().isVerified) {
+          <svg class="verified-icon" width="18" height="18" viewBox="0 0 24 24" fill="#667eea">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        }
+      </div>
+
+      <div class="seller-meta">
+        <span class="followers-count">{{ seller().followersCount }} Followers</span>
+        @if (!compact()) {
+          <span class="meta-separator">•</span>
+          <span class="shares-text">0 Shares Profile</span>
+        }
+      </div>
+
+      @if (!compact()) {
+        <div class="seller-rating">
+          <span class="rating-value">{{ seller().rating }}</span>
+          <app-star-rating [rating]="seller().rating" [size]="16"></app-star-rating>
+          <a href="javascript:void(0)" class="reviews-link">{{ seller().reviewCount }} Reviews</a>
+        </div>
+      }
+    </div>
+
+    @if (showActions()) {
+      <div class="seller-actions">
+        <button class="btn-follow" (click)="onFollow()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="8.5" cy="7" r="4"></circle>
+            <line x1="20" y1="8" x2="20" y2="14"></line>
+            <line x1="23" y1="11" x2="17" y2="11"></line>
+          </svg>
+          Follow
+        </button>
+        <button class="btn-chat" (click)="onChat()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Chat
+        </button>
+      </div>
+    }
+  </div>
+</div>
