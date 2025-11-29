@@ -42,8 +42,38 @@ export const routes: Routes = [
         loadComponent: () => import('./Account/reset-password/reset-password').then(m => m.ResetPassword)
     },
     {
+        path: 'vendor-registration',
+        loadComponent: () => import('./Account/vendor-registration/vendor-registration').then(m => m.VendorRegistration)
+    },
+    {
         path: 'chat',
         loadComponent: () => import('./pages/chat/chat').then(m => m.Chat)
+    },
+    {
+        path: 'dashboard',
+        loadComponent: () => import('./dashboard/layout/dashboard-layout/dashboard-layout').then(m => m.DashboardLayout),
+        children: [
+            {
+                path: '',
+                loadComponent: () => import('./dashboard/pages/dashboard-overview/dashboard-overview').then(m => m.DashboardOverview)
+            },
+            {
+                path: 'products',
+                loadComponent: () => import('./dashboard/pages/products-management/products-management').then(m => m.ProductsManagement)
+            },
+            {
+                path: 'orders',
+                loadComponent: () => import('./dashboard/pages/orders-management/orders-management').then(m => m.OrdersManagement)
+            },
+            {
+                path: 'analytics',
+                loadComponent: () => import('./dashboard/pages/analytics/analytics').then(m => m.Analytics)
+            },
+            {
+                path: 'settings',
+                loadComponent: () => import('./dashboard/pages/settings/settings').then(m => m.Settings)
+            }
+        ]
     },
     {
         path: '',
