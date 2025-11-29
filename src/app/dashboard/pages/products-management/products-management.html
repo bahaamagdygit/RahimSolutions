@@ -1,0 +1,291 @@
+<div class="products-management">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Products</h1>
+      <p class="page-subtitle">Manage your product listings</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4.66667 6.66667L8 10L11.3333 6.66667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 10V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Export
+      </button>
+      <button class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 3.33334V12.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3.33334 8H12.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Add Product
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters and Search -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="9" cy="9" r="6" stroke="#9CA3AF" stroke-width="1.5"/>
+        <path d="M14 14L18 18" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="text"
+        placeholder="Search products..."
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+      />
+    </div>
+
+    <div class="filter-group">
+      <select
+        class="filter-select"
+        [ngModel]="selectedCategory()"
+        (ngModelChange)="selectedCategory.set($event)"
+      >
+        @for (category of categories; track category.value) {
+          <option [value]="category.value">{{ category.label }}</option>
+        }
+      </select>
+
+      <select
+        class="filter-select"
+        [ngModel]="selectedStatus()"
+        (ngModelChange)="selectedStatus.set($event)"
+      >
+        @for (status of statuses; track status.value) {
+          <option [value]="status.value">{{ status.label }}</option>
+        }
+      </select>
+
+      <div class="view-toggle">
+        <button
+          class="view-btn"
+          [class.active]="viewMode() === 'list'"
+          (click)="viewMode.set('list')"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2 4H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M2 8H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M2 12H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button
+          class="view-btn"
+          [class.active]="viewMode() === 'grid'"
+          (click)="viewMode.set('grid')"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Actions -->
+  @if (selectedProducts().length > 0) {
+    <div class="bulk-actions">
+      <span class="selected-count">{{ selectedProducts().length }} selected</span>
+      <div class="bulk-btns">
+        <button class="bulk-btn" (click)="bulkAction('activate')">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M11.6667 3.5L5.25 9.91667L2.33333 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Activate
+        </button>
+        <button class="bulk-btn" (click)="bulkAction('deactivate')">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M9 5L5 9M5 5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Deactivate
+        </button>
+        <button class="bulk-btn delete" (click)="bulkAction('delete')">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1.75 3.5H12.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11.0833 3.5V11.6667C11.0833 12.25 10.5 12.8333 9.91667 12.8333H4.08333C3.5 12.8333 2.91667 12.25 2.91667 11.6667V3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4.66667 3.5V2.33333C4.66667 1.75 5.25 1.16667 5.83333 1.16667H8.16667C8.75 1.16667 9.33333 1.75 9.33333 2.33333V3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Delete
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Products Table (List View) -->
+  @if (viewMode() === 'list') {
+    <div class="card products-table-card">
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="checkbox-cell">
+                <input
+                  type="checkbox"
+                  [checked]="selectedProducts().length === filteredProducts.length && filteredProducts.length > 0"
+                  (change)="toggleAllProducts()"
+                />
+              </th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Views</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of filteredProducts; track product.id) {
+              <tr [class.selected]="isProductSelected(product.id)">
+                <td class="checkbox-cell">
+                  <input
+                    type="checkbox"
+                    [checked]="isProductSelected(product.id)"
+                    (change)="toggleProductSelection(product.id)"
+                  />
+                </td>
+                <td class="product-cell">
+                  <div class="product-info">
+                    <div class="product-image-placeholder"></div>
+                    <span class="product-name">{{ product.name }}</span>
+                  </div>
+                </td>
+                <td>{{ product.category }}</td>
+                <td class="price">{{ formatCurrency(product.price) }}</td>
+                <td>
+                  <span class="stock" [class.low-stock]="product.stock < 10" [class.out-of-stock]="product.stock === 0">
+                    {{ product.stock }}
+                  </span>
+                </td>
+                <td>{{ product.views.toLocaleString() }}</td>
+                <td>
+                  <span class="status-badge" [class]="getStatusClass(product.status)">
+                    {{ product.status }}
+                  </span>
+                </td>
+                <td class="date">{{ formatDate(product.createdAt) }}</td>
+                <td class="actions-cell">
+                  <button class="action-btn" title="Edit" (click)="editProduct(product.id)">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M11.3333 2.00001C11.5084 1.82491 11.7163 1.68602 11.9451 1.59126C12.1739 1.4965 12.4191 1.44772 12.6667 1.44772C12.9143 1.44772 13.1594 1.4965 13.3883 1.59126C13.6171 1.68602 13.8249 1.82491 14 2.00001C14.1751 2.1751 14.314 2.38298 14.4088 2.61181C14.5035 2.84065 14.5523 3.08581 14.5523 3.33334C14.5523 3.58088 14.5035 3.82604 14.4088 4.05487C14.314 4.28371 14.1751 4.49159 14 4.66668L5 13.6667L1.33333 14.6667L2.33333 11L11.3333 2.00001Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <button class="action-btn" title="View">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M1 8C1 8 3.5 3 8 3C12.5 3 15 8 15 8C15 8 12.5 13 8 13C3.5 13 1 8 1 8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                  </button>
+                  <button class="action-btn delete" title="Delete" (click)="deleteProduct(product.id)">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M2 4H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M12.6667 4V13.3333C12.6667 14 12 14.6667 11.3333 14.6667H4.66667C4 14.6667 3.33333 14 3.33333 13.3333V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M5.33333 4V2.66667C5.33333 2 6 1.33334 6.66667 1.33334H9.33333C10 1.33334 10.6667 2 10.6667 2.66667V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="table-footer">
+        <span class="results-info">Showing {{ filteredProducts.length }} of {{ products.length }} products</span>
+        <div class="pagination">
+          <button class="page-btn" disabled>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Products Grid (Grid View) -->
+  @if (viewMode() === 'grid') {
+    <div class="products-grid">
+      @for (product of filteredProducts; track product.id) {
+        <div class="product-card" [class.selected]="isProductSelected(product.id)">
+          <div class="card-checkbox">
+            <input
+              type="checkbox"
+              [checked]="isProductSelected(product.id)"
+              (change)="toggleProductSelection(product.id)"
+            />
+          </div>
+          <div class="card-image">
+            <div class="product-image-placeholder large"></div>
+            <span class="status-badge" [class]="getStatusClass(product.status)">
+              {{ product.status }}
+            </span>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">{{ product.name }}</h3>
+            <span class="card-category">{{ product.category }}</span>
+            <div class="card-price">{{ formatCurrency(product.price) }}</div>
+            <div class="card-meta">
+              <span class="meta-item">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M1 7C1 7 3 2.5 7 2.5C11 2.5 13 7 13 7C13 7 11 11.5 7 11.5C3 11.5 1 7 1 7Z" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                {{ product.views }}
+              </span>
+              <span class="meta-item" [class.low-stock]="product.stock < 10">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 4.5L7 2L12 4.5V9.5L7 12L2 9.5V4.5Z" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                {{ product.stock }} in stock
+              </span>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="card-action-btn" (click)="editProduct(product.id)">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M10 1.75C10.1531 1.59687 10.3356 1.47527 10.5369 1.39235C10.7382 1.30943 10.9542 1.26675 11.1725 1.26675C11.3908 1.26675 11.6068 1.30943 11.8081 1.39235C12.0094 1.47527 12.1919 1.59687 12.345 1.75C12.4981 1.90313 12.6197 2.08564 12.7027 2.28694C12.7856 2.48825 12.8283 2.70428 12.8283 2.9225C12.8283 3.14072 12.7856 3.35675 12.7027 3.55806C12.6197 3.75936 12.4981 3.94187 12.345 4.095L4.375 12.065L1.16667 12.8333L1.9375 9.625L10 1.75Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Edit
+            </button>
+            <button class="card-action-btn delete" (click)="deleteProduct(product.id)">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1.75 3.5H12.25" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M11 3.5V11.6667C11 12.25 10.5 12.8333 10 12.8333H4C3.5 12.8333 3 12.25 3 11.6667V3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              Delete
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (filteredProducts.length === 0) {
+    <div class="empty-state">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <path d="M32 8L56 20V44L32 56L8 44V20L32 8Z" stroke="#D1D5DB" stroke-width="2"/>
+        <path d="M8 20L32 32L56 20" stroke="#D1D5DB" stroke-width="2"/>
+        <path d="M32 32V56" stroke="#D1D5DB" stroke-width="2"/>
+      </svg>
+      <h3>No products found</h3>
+      <p>Try adjusting your search or filter to find what you're looking for.</p>
+    </div>
+  }
+</div>
