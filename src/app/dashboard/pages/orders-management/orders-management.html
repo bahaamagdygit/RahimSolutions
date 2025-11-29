@@ -1,0 +1,268 @@
+<div class="orders-management">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Orders</h1>
+      <p class="page-subtitle">Manage and track your orders</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4.66667 6.66667L8 10L11.3333 6.66667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 10V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Export Orders
+      </button>
+    </div>
+  </div>
+
+  <!-- Order Stats -->
+  <div class="stats-row">
+    @for (stat of orderStats; track stat.label) {
+      <div class="stat-pill" [class]="'stat-' + stat.color" (click)="selectedStatus.set(stat.label === 'All Orders' ? 'all' : stat.label.toLowerCase())">
+        <span class="stat-value">{{ stat.value }}</span>
+        <span class="stat-label">{{ stat.label }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="9" cy="9" r="6" stroke="#9CA3AF" stroke-width="1.5"/>
+        <path d="M14 14L18 18" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input
+        type="text"
+        placeholder="Search orders, customers..."
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+      />
+    </div>
+
+    <div class="filter-group">
+      <select
+        class="filter-select"
+        [ngModel]="selectedStatus()"
+        (ngModelChange)="selectedStatus.set($event)"
+      >
+        @for (status of statuses; track status.value) {
+          <option [value]="status.value">{{ status.label }}</option>
+        }
+      </select>
+
+      <select
+        class="filter-select"
+        [ngModel]="selectedDateRange()"
+        (ngModelChange)="selectedDateRange.set($event)"
+      >
+        @for (range of dateRanges; track range.value) {
+          <option [value]="range.value">{{ range.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="card orders-table-card">
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of filteredOrders; track order.id) {
+            <tr>
+              <td class="order-id">{{ order.id }}</td>
+              <td class="customer-cell">
+                <div class="customer-info">
+                  <div class="customer-avatar-placeholder"></div>
+                  <div class="customer-details">
+                    <span class="customer-name">{{ order.customer.name }}</span>
+                    <span class="customer-email">{{ order.customer.email }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="product-cell">
+                <div class="product-info">
+                  <div class="product-image-placeholder"></div>
+                  <span>{{ order.product }}</span>
+                </div>
+              </td>
+              <td class="date-cell">
+                <div class="date-info">
+                  <span class="date">{{ formatDate(order.date) }}</span>
+                  <span class="time">{{ formatTime(order.date) }}</span>
+                </div>
+              </td>
+              <td class="amount">{{ formatCurrency(order.amount) }}</td>
+              <td class="payment">{{ order.paymentMethod }}</td>
+              <td>
+                <span class="status-badge" [class]="getStatusClass(order.status)">
+                  {{ order.status }}
+                </span>
+              </td>
+              <td class="actions-cell">
+                <button class="action-btn" title="View Details" (click)="viewOrder(order)">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M1 8C1 8 3.5 3 8 3C12.5 3 15 8 15 8C15 8 12.5 13 8 13C3.5 13 1 8 1 8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </button>
+                <button class="action-btn" title="Contact Customer" (click)="contactCustomer(order)">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M14 8C14 11.3137 11.3137 14 8 14C6.8 14 5.67333 13.68 4.70667 13.1333L2 14L2.86667 11.2933C2.32 10.3267 2 9.2 2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8Z" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="table-footer">
+      <span class="results-info">Showing {{ filteredOrders.length }} of {{ orders.length }} orders</span>
+      <div class="pagination">
+        <button class="page-btn" disabled>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  @if (filteredOrders.length === 0) {
+    <div class="empty-state">
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <path d="M16 8H48L56 24V52C56 54.2091 54.2091 56 52 56H12C9.79086 56 8 54.2091 8 52V24L16 8Z" stroke="#D1D5DB" stroke-width="2"/>
+        <path d="M8 24H56" stroke="#D1D5DB" stroke-width="2"/>
+      </svg>
+      <h3>No orders found</h3>
+      <p>Try adjusting your search or filter to find what you're looking for.</p>
+    </div>
+  }
+</div>
+
+<!-- Order Details Sidebar -->
+@if (selectedOrder()) {
+  <div class="order-sidebar-overlay" (click)="closeOrderDetails()"></div>
+  <div class="order-sidebar">
+    <div class="sidebar-header">
+      <h2>Order Details</h2>
+      <button class="close-btn" (click)="closeOrderDetails()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="sidebar-content">
+      <!-- Order Info -->
+      <div class="order-info-section">
+        <div class="order-id-row">
+          <span class="order-id-label">{{ selectedOrder()!.id }}</span>
+          <span class="status-badge" [class]="getStatusClass(selectedOrder()!.status)">
+            {{ selectedOrder()!.status }}
+          </span>
+        </div>
+        <p class="order-date">{{ formatDate(selectedOrder()!.date) }} at {{ formatTime(selectedOrder()!.date) }}</p>
+      </div>
+
+      <!-- Customer -->
+      <div class="detail-section">
+        <h3 class="section-title">Customer</h3>
+        <div class="customer-card">
+          <div class="customer-avatar-placeholder large"></div>
+          <div class="customer-info">
+            <span class="name">{{ selectedOrder()!.customer.name }}</span>
+            <span class="email">{{ selectedOrder()!.customer.email }}</span>
+          </div>
+          <button class="contact-btn" (click)="contactCustomer(selectedOrder()!)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M14 8C14 11.3137 11.3137 14 8 14C6.8 14 5.67333 13.68 4.70667 13.1333L2 14L2.86667 11.2933C2.32 10.3267 2 9.2 2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8Z" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Product -->
+      <div class="detail-section">
+        <h3 class="section-title">Product</h3>
+        <div class="product-card">
+          <div class="product-image-placeholder large"></div>
+          <div class="product-info">
+            <span class="name">{{ selectedOrder()!.product }}</span>
+            <span class="price">{{ formatCurrency(selectedOrder()!.amount) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment -->
+      <div class="detail-section">
+        <h3 class="section-title">Payment</h3>
+        <div class="detail-row">
+          <span class="label">Method</span>
+          <span class="value">{{ selectedOrder()!.paymentMethod }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Total</span>
+          <span class="value total">{{ formatCurrency(selectedOrder()!.amount) }}</span>
+        </div>
+      </div>
+
+      <!-- Update Status -->
+      <div class="detail-section">
+        <h3 class="section-title">Update Status</h3>
+        <div class="status-buttons">
+          <button
+            class="status-btn pending"
+            [class.active]="selectedOrder()!.status === 'pending'"
+            (click)="updateOrderStatus(selectedOrder()!.id, 'pending')"
+          >Pending</button>
+          <button
+            class="status-btn processing"
+            [class.active]="selectedOrder()!.status === 'processing'"
+            (click)="updateOrderStatus(selectedOrder()!.id, 'processing')"
+          >Processing</button>
+          <button
+            class="status-btn shipped"
+            [class.active]="selectedOrder()!.status === 'shipped'"
+            (click)="updateOrderStatus(selectedOrder()!.id, 'shipped')"
+          >Shipped</button>
+          <button
+            class="status-btn completed"
+            [class.active]="selectedOrder()!.status === 'completed'"
+            (click)="updateOrderStatus(selectedOrder()!.id, 'completed')"
+          >Completed</button>
+          <button
+            class="status-btn cancelled"
+            [class.active]="selectedOrder()!.status === 'cancelled'"
+            (click)="updateOrderStatus(selectedOrder()!.id, 'cancelled')"
+          >Cancelled</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
