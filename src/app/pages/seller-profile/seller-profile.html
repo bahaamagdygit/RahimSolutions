@@ -1,0 +1,246 @@
+<div class="seller-profile-page">
+  <!-- Cover Section -->
+  <div class="cover-section">
+    <img [src]="seller.coverImage" alt="Cover" class="cover-image">
+    <div class="cover-overlay"></div>
+  </div>
+
+  <!-- Centered Seller Card -->
+  <div class="seller-card-container">
+    <div class="seller-card">
+      <!-- Logo -->
+      <div class="seller-logo-wrapper">
+        <img [src]="seller.logo" [alt]="seller.name" class="seller-logo">
+      </div>
+
+      <!-- Seller Name & Verification -->
+      <div class="seller-name-row">
+        <h1 class="seller-name">{{ seller.name }}</h1>
+        @if (seller.isVerified) {
+          <svg class="verified-badge" width="22" height="22" viewBox="0 0 24 24" fill="#667eea">
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        }
+      </div>
+
+      <!-- Followers & Share -->
+      <div class="seller-meta">
+        <a href="javascript:void(0)" class="meta-link followers">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="8.5" cy="7" r="4"></circle>
+          </svg>
+          <span>{{ seller.followersCount }} Followers</span>
+        </a>
+        <a href="javascript:void(0)" class="meta-link share" (click)="onShareProfile()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+          <span>Share Profile</span>
+        </a>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="seller-actions">
+        <button class="btn-follow" (click)="onFollow()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+          </svg>
+          Follow
+        </button>
+        <button class="btn-chat" (click)="onChat()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          Chat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Container -->
+  <div class="content-container">
+    <!-- About Seller Section -->
+    <section class="about-section">
+      <h2 class="section-title">About Seller</h2>
+      <p class="about-text">{{ seller.description }}</p>
+
+      <div class="seller-stats">
+        <div class="stat-item">
+          <span>Joined since {{ seller.memberSince }}</span>
+        </div>
+        <div class="stat-item rating-stat">
+          <span class="rating-value">{{ seller.rating }}</span>
+          <app-star-rating [rating]="seller.rating" [size]="18"></app-star-rating>
+          <a href="javascript:void(0)" class="reviews-link" (click)="scrollToReviews()">{{ seller.reviewCount }} Reviews</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ads Section -->
+    <section class="ads-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          Ads
+          <span class="ads-count">{{ seller.adsCount }}</span>
+        </h2>
+
+        <div class="search-wrapper">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search ads in profile"
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="onSearch()">
+          <button class="filter-btn" (click)="onFilter()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="4" y1="6" x2="20" y2="6"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+              <line x1="11" y1="18" x2="13" y2="18"></line>
+            </svg>
+          </button>
+          <button class="search-btn" (click)="onSearch()">Find</button>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid">
+        @for (product of sellerAds; track product.id) {
+          <app-min-genaric-card
+            [productTitle]="product.title"
+            [currentPrice]="product.currentPrice"
+            [originalPrice]="product.originalPrice"
+            [productImage]="product.image"
+            [badgeText]="product.badge"
+            [categoryText]="product.category"
+            [discountPercent]="product.discount || ''">
+          </app-min-genaric-card>
+        }
+      </div>
+
+      <!-- Show All Button -->
+      @if (sellerAds.length > 6) {
+        <div class="show-all-wrapper">
+          <button class="btn-show-all" (click)="onViewAllAds()">
+            Show All Ads
+          </button>
+        </div>
+      }
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section" id="reviews">
+      <div class="section-header">
+        <div class="header-left">
+          <h2 class="section-title">Reviews</h2>
+          <div class="rating-summary">
+            <span class="rating-value">{{ seller.rating }}</span>
+            <app-star-rating [rating]="seller.rating" [size]="24"></app-star-rating>
+          </div>
+        </div>
+        @if (!isWritingReview()) {
+          <button class="btn-write-review" (click)="onWriteReview()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            Write Review
+          </button>
+        }
+      </div>
+
+      <!-- Write Review Form -->
+      @if (isWritingReview()) {
+        <div class="write-review-form">
+          <div class="form-header">
+            <h3>Write Your Review</h3>
+            <button class="btn-close" (click)="onCancelReview()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div class="rating-select">
+            <span class="label">Your Rating:</span>
+            <app-star-rating
+              [rating]="newRating()"
+              [size]="28"
+              [interactive]="true"
+              (ratingChange)="onRatingChange($event)">
+            </app-star-rating>
+          </div>
+
+          <textarea
+            class="review-textarea"
+            placeholder="Share your experience..."
+            rows="4"
+            [(ngModel)]="newComment">
+          </textarea>
+
+          <div class="form-actions">
+            <button class="btn-cancel" (click)="onCancelReview()">Cancel</button>
+            <button
+              class="btn-submit"
+              [disabled]="newRating() === 0 || !newComment().trim()"
+              (click)="onSubmitReview()">
+              Submit Review
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Reviews List -->
+      <div class="reviews-list">
+        @for (review of reviews; track review.id) {
+          <app-review-card [review]="review"></app-review-card>
+        }
+      </div>
+    </section>
+
+    <!-- Similar Ads Section -->
+    <section class="similar-ads-section">
+      <div class="section-header">
+        <h2 class="section-title">Similar Ads</h2>
+        <a href="javascript:void(0)" class="view-more-link" (click)="onViewMore()">View More</a>
+      </div>
+
+      <div class="slider-container">
+        <button class="slider-btn prev" (click)="slideLeft()" [disabled]="sliderIndex() === 0">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <div class="slider-wrapper">
+          <div class="slider-track" [style.transform]="getSliderTransform()">
+            @for (product of similarAds; track product.id) {
+              <app-min-genaric-card
+                [productTitle]="product.title"
+                [currentPrice]="product.currentPrice"
+                [originalPrice]="product.originalPrice"
+                [productImage]="product.image"
+                [badgeText]="product.badge"
+                [categoryText]="product.category"
+                [discountPercent]="product.discount || ''">
+              </app-min-genaric-card>
+            }
+          </div>
+        </div>
+
+        <button class="slider-btn next" (click)="slideRight()" [disabled]="sliderIndex() >= similarAds.length - 4">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </section>
+  </div>
+</div>
